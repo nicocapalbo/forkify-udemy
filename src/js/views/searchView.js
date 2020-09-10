@@ -12,6 +12,7 @@ export const clearInput = () => {
 
 export const clearResults = () => {
     elements.resultsList.innerHTML = '';
+    elements.resultsPages.innerHTML = '';
 };
 
 const titleReducer = (title, limit = 17) => {
@@ -48,6 +49,49 @@ const renderRecipe = (recipe) => {
 
 };
 
-export const renderResults = (results) => {
-    results.forEach(renderRecipe);
+const pagesButton = (page, type, pointer) => `
+    <button class="btn-inline results__btn--${type}" data-goto="${page}">
+        <svg class="search__icon">
+            <use href="img/icons.svg#icon-triangle-${pointer}"></use>
+        </svg>
+        <span>Page ${page}</span>
+    </button>
+    `;
+
+const pageNum = (page, resultsTotal, resPerPage, ) => {
+    const pages = Math.ceil(resultsTotal / resPerPage);
+
+    let buttons;
+    if (page === 1 && pages > 1) {
+        // Only button for next page 
+        buttons = pagesButton(page + 1, 'next', 'right');
+    } else if (page < pages) {
+        // Two buttons for previous and next page
+        buttons = `
+        ${pagesButton(page - 1, "prev", "left")}
+        ${pagesButton(page + 1, "next", "right")}
+        `
+    } else if (page === pages && pages > 1) {
+        // Only button for previous page
+        buttons = pagesButton(page - 1, "prev", "left");
+    };
+
+    elements.resultsPages.insertAdjacentHTML('afterbegin', buttons)
+
+};
+
+export const renderResults = (results, page = 2, resPerPage = 10) => {
+    let start = (page - 1) * resPerPage;
+    // page 1, start = 0
+    // page 2, start = 10
+    // page 3, start = 20
+    let end = page * resPerPage ;
+    // page 1, end = 10
+    // page 2, end = 20
+    // page 3, end = 30
+    
+    // slice doesn't include the last value, it's `end - 1`
+    results.slice(start, end).forEach(renderRecipe);
+    pageNum(page, results.length, resPerPage);
+
 };

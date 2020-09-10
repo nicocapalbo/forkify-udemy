@@ -44,7 +44,15 @@ elements.searchForm.addEventListener('submit', e => {
     controlSearch();
 });
 
+elements.resultsPages.addEventListener('click', e => {
+    const btn = e.target.closest('.btn-inline');
+    if (btn) {
+       const goto = parseInt(btn.dataset.goto, 10);
+       searchView.clearResults();
+       searchView.renderResults(state.search.result, goto);
+    }
 
+});
 
 // const search = new Search('pizza');
 // console.log(search);
