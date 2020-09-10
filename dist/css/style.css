@@ -147,7 +147,7 @@ body {
     width: 5.5rem;
     fill: #F59A83;
     transform-origin: 44% 50%;
-    animation: rotate 1.5s infinite linear; }
+    animation: rotate 1.5s infinite cubic-bezier(0.68, -0.55, 0.27, 1.55)}
 
 @keyframes rotate {
   0% {
