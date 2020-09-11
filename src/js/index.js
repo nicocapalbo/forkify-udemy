@@ -1,4 +1,5 @@
 import Search from "./models/Search";
+import Recipe from "./models/Recipe";
 import * as searchView from "./views/searchView";
 import {elements, renderWheel, removeWheel} from "./views/base";
 
@@ -10,6 +11,9 @@ import {elements, renderWheel, removeWheel} from "./views/base";
 
 const state = {};
 
+// ************************
+// SEARCH CONTROLLER
+// ************************
 
 const controlSearch = async () => {
     // 1) Get query from view
@@ -57,3 +61,20 @@ elements.resultsPages.addEventListener('click', e => {
 // const search = new Search('pizza');
 // console.log(search);
 // search.getResults();
+
+// ************************
+// RECIPE CONTROLLER
+// ************************
+
+const recip = new Recipe('35626');
+recip.getRecipe();
+console.log(recip);
+
+
+// const controlRecipe = async () => {
+
+// }
+
+
+
+
