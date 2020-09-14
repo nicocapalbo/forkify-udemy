@@ -29,13 +29,19 @@ const controlSearch = async () => {
         searchView.clearResults();
         renderWheel(elements.resultsList);
  
-        // 4) Search for recipes
-        await state.search.getResults();
+        try {
+            // 4) Search for recipes
+            await state.search.getResults();
 
-        // 5) Render results to UI
-        // console.log(state.search.result);
-        removeWheel();
-        searchView.renderResults(state.search.result);
+            // 5) Render results to UI
+            // console.log(state.search.result);
+            removeWheel();
+            searchView.renderResults(state.search.result);
+
+        } catch (err) {
+            removeWheel();
+            alert(err);
+        }
         
     }
 
@@ -66,15 +72,42 @@ elements.resultsPages.addEventListener('click', e => {
 // RECIPE CONTROLLER
 // ************************
 
-const recip = new Recipe('35626');
-recip.getRecipe();
-console.log(recip);
+// const recip = new Recipe('35626');
+// recip.getRecipe();
+// console.log(recip);
+
+// 'async' because we need to wait for the information
+const controlRecipe = async () => {
+    const id = window.location.hash.replace('#', '');
+    // console.log(id);
+
+    // only run if an ID was captured/exists
+    if (id) {
+        // Prepare UI for change
+        
+        
+        // Create new recipe
+        state.recipe = new Recipe(id);
+        
+        try {
+            // 'await' for the info to arrive
+            await state.recipe.getRecipe();
+            
+            // Calculate servings and time
+            state.recipe.calcTime();
+            state.recipe.calcServings();
+
+            // Render recipe
+            console.log(state.recipe);
+        } catch (err) {
+            alert('Something went wrong!');
+        }
+    }
+}
 
 
-// const controlRecipe = async () => {
+// 'window' is the global scope, the whole window
+// window.addEventListener('hashchange', controlRecipe);
 
-// }
-
-
-
+['hashchange', 'load'].forEach(e => { window.addEventListener(e, controlRecipe)});
 
