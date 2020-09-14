@@ -1,6 +1,7 @@
 import Search from "./models/Search";
 import Recipe from "./models/Recipe";
 import * as searchView from "./views/searchView";
+import * as recipeView from "./views/recipeView";
 import {elements, renderWheel, removeWheel} from "./views/base";
 
 // Global state of the app
@@ -84,7 +85,8 @@ const controlRecipe = async () => {
     // only run if an ID was captured/exists
     if (id) {
         // Prepare UI for change
-        
+        recipeView.clearRecipe();
+        renderWheel(elements.resultRecipe);
         
         // Create new recipe
         state.recipe = new Recipe(id);
@@ -99,7 +101,10 @@ const controlRecipe = async () => {
             state.recipe.perseIngredients();
 
             // Render recipe
-            console.log(state.recipe);
+            removeWheel();
+            // console.log(state.recipe);
+            recipeView.renderRecipe(state.recipe);
+
         } catch (err) {
             alert('Something went wrong!');
         }
