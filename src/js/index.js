@@ -87,6 +87,9 @@ const controlRecipe = async () => {
         // Prepare UI for change
         recipeView.clearRecipe();
         renderWheel(elements.resultRecipe);
+
+        // higlight recipe
+        searchView.highlightSelected(id);
         
         // Create new recipe
         state.recipe = new Recipe(id);
