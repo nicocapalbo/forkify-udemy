@@ -1,5 +1,6 @@
 import Search from "./models/Search";
 import Recipe from "./models/Recipe";
+import List from "./models/List";
 import * as searchView from "./views/searchView";
 import * as recipeView from "./views/recipeView";
 import {elements, renderWheel, removeWheel} from "./views/base";
@@ -136,3 +137,4 @@ elements.resultRecipe.addEventListener('click', e => {
 })
 
 
+window.el = new List();
