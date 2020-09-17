@@ -15,7 +15,7 @@ import {elements, renderWheel, removeWheel} from "./views/base";
 // - Liked recipes
 
 const state = {};
-window.state = state;
+// window.state = state;
 
 // ************************
 // SEARCH CONTROLLER
@@ -94,7 +94,7 @@ const controlRecipe = async () => {
         renderWheel(elements.resultRecipe);
 
         // higlight recipe
-        searchView.highlightSelected(id);
+        if (state.search) searchView.highlightSelected(id);
         
         // Create new recipe
         state.recipe = new Recipe(id);
@@ -148,18 +148,17 @@ const controlList = () => {
 // ************************
 
 // REMOVE 
-state.likes = new Likes(); 
-likesView.toggleLikeMenu(state.likes.getNumLikes());
+
 
 const controlLike = () => {
     if (!state.likes) {
         state.likes = new Likes(); 
     }
     
-    console.log(state.likes);
+    // console.log(state.likes);
 
     const currentID = state.recipe.id;
-    console.log(currentID);
+    // console.log(currentID);
     
     if (!state.likes.isLiked(currentID)) {
         // add like 
@@ -168,7 +167,7 @@ const controlLike = () => {
         likesView.toggleLikeBtn(true);
         // add like to UI list
         likesView.renderLike(newLike);
-        console.log(state.likes);
+        // console.log(state.likes);
     } else {
         // delete like
         state.likes.deleteLikes(currentID);
@@ -176,13 +175,27 @@ const controlLike = () => {
         likesView.toggleLikeBtn(false);
         // delete like from UI list
         likesView.deleteLike(currentID);
-        console.log(state.likes);
+        // console.log(state.likes);
     }
     likesView.toggleLikeMenu(state.likes.getNumLikes());
-
-
-
 }
+
+// Restore liked recipes on pageload
+
+window.addEventListener('load', () => {
+    state.likes = new Likes(); 
+    
+    // Restore likes
+    state.likes.readStorage();
+
+    // Toggle like button
+    likesView.toggleLikeMenu(state.likes.getNumLikes());
+
+    // Render likes to UI
+    state.likes.likes.forEach(element => {
+        likesView.renderLike(element);
+    });
+});
 
 
 
@@ -229,4 +242,4 @@ elements.resultRecipe.addEventListener('click', e => {
 })
 
 
-window.el = new List();
+// window.el = new List();
