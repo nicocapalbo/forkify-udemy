@@ -4,7 +4,10 @@ export const elements = {
     resultsList: document.querySelector('.results__list'),
     resultsPages: document.querySelector('.results__pages'),
     resultRecipe: document.querySelector('.recipe'),
-    shopping: document.querySelector('.shopping__list')
+    shopping: document.querySelector('.shopping__list'),
+    likesMenu: document.querySelector('.likes__field'),
+    likesList: document.querySelector('.likes__list')
+
 }
 
 
