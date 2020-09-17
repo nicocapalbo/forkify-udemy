@@ -3,6 +3,7 @@ import Recipe from "./models/Recipe";
 import List from "./models/List";
 import * as searchView from "./views/searchView";
 import * as recipeView from "./views/recipeView";
+import * as listView from "./views/listView";
 import {elements, renderWheel, removeWheel} from "./views/base";
 
 // Global state of the app
@@ -12,6 +13,7 @@ import {elements, renderWheel, removeWheel} from "./views/base";
 // - Liked recipes
 
 const state = {};
+window.state = state;
 
 // ************************
 // SEARCH CONTROLLER
@@ -121,6 +123,46 @@ const controlRecipe = async () => {
 
 ['hashchange', 'load'].forEach(e => { window.addEventListener(e, controlRecipe)});
 
+// ************************
+// LIST CONTROLLER
+// ************************
+
+const controlList = () => {
+    // create new list if there is none existing
+    if (!state.list) {
+        state.list = new List();
+    }
+
+    // add ingredients to the list
+    state.recipe.ingredients.forEach(element => {
+        const item = state.list.addItem(element.count, element.unit, element.ingredient);
+        listView.renderItem(item);
+    });
+
+}
+
+
+// Handle DELETE and UPDATE list
+
+elements.shopping.addEventListener('click', e => {
+    const id = e.target.closest('.shopping__item').dataset.itemid;
+
+    // Handle the delete button
+    if (e.target.matches('.shopping__delete, .shopping__delete *')) {
+        // Delete from state
+        state.list.deleteItem(id);
+
+        // Delete from UI
+        listView.deleteItem(id);
+     // Handle the count update
+    } else if (e.target.matches('.shopping__count-value')) {
+        const val = parseFloat(e.target.value, 10);
+        state.list.updateCount(id, val);
+    }
+})
+
+
+
 // recipe button clicks
 
 elements.resultRecipe.addEventListener('click', e => {
@@ -132,6 +174,8 @@ elements.resultRecipe.addEventListener('click', e => {
     } else if (e.target.matches('.btn-increase, .btn-increase *')) {
         state.recipe.updateServing('inc');
         recipeView.updateServingsIngredients(state.recipe);
+    } else if (e.target.matches('.recipe__btn--add, .recipe__btn--add *')) {
+        controlList();
     }
     console.log(state.recipe);
 })
